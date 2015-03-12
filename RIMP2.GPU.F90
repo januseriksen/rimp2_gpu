@@ -418,50 +418,54 @@ PROGRAM MAIN
            enddo
         enddo
         deallocate(toccTest)
-        !verify that djik(nvirt,noccEOS,noccEOS,nocctot)
-        allocate(toccTest(nvirt,noccEOS,noccEOS,nocctot))
-        read(fileLu) toccTest
-        do D=1,nocctot
-           do C=1,noccEOS
-              do B=1,noccEOS
-                 do A=1,nvirt
-                    IF(ABS(toccTest(A,B,C,D)-djik(A,B,C,D)).GT.1.0E-10)THEN
-                       print*,'tocc2(A,B,C,D)',toccTest(A,B,C,D)
-                       print*,'tocc(A,B,C,D)',djik(A,B,C,D)
-                       print*,'Error ',A,B,C,D
-                       stop 'ERROR3 '
-                    ENDIF
+        IF(first_order)THEN
+           !verify that djik(nvirt,noccEOS,noccEOS,nocctot)
+           allocate(toccTest(nvirt,noccEOS,noccEOS,nocctot))
+           read(fileLu) toccTest
+           do D=1,nocctot
+              do C=1,noccEOS
+                 do B=1,noccEOS
+                    do A=1,nvirt
+                       IF(ABS(toccTest(A,B,C,D)-djik(A,B,C,D)).GT.1.0E-10)THEN
+                          print*,'tocc2(A,B,C,D)',toccTest(A,B,C,D)
+                          print*,'tocc(A,B,C,D)',djik(A,B,C,D)
+                          print*,'Error ',A,B,C,D
+                          stop 'ERROR3 '
+                       ENDIF
+                    enddo
                  enddo
               enddo
            enddo
-        enddo
-        deallocate(toccTest)
-        !verify that blad(nvirtEOS,nocc,nvirtEOS,nvirt) is correct
-        allocate(toccTest(nvirtEOS,nocc,nvirtEOS,nvirt))
-        read(fileLu) toccTest
-        do D=1,nvirt
-           do C=1,nvirtEOS
-              do B=1,nocc
-                 do A=1,nvirtEOS
-                    IF(ABS(toccTest(A,B,C,D)-blad(A,B,C,D)).GT.1.0E-10)THEN
-                       print*,'tocc2(A,B,C,D)',toccTest(A,B,C,D)
-                       print*,'tocc(A,B,C,D)',blad(A,B,C,D)
-                       print*,'Error ',A,B,C,D
-                       stop 'ERROR3 '
-                    ENDIF
+           deallocate(toccTest)
+           !verify that blad(nvirtEOS,nocc,nvirtEOS,nvirt) is correct
+           allocate(toccTest(nvirtEOS,nocc,nvirtEOS,nvirt))
+           read(fileLu) toccTest
+           do D=1,nvirt
+              do C=1,nvirtEOS
+                 do B=1,nocc
+                    do A=1,nvirtEOS
+                       IF(ABS(toccTest(A,B,C,D)-blad(A,B,C,D)).GT.1.0E-10)THEN
+                          print*,'tocc2(A,B,C,D)',toccTest(A,B,C,D)
+                          print*,'tocc(A,B,C,D)',blad(A,B,C,D)
+                          print*,'Error ',A,B,C,D
+                          stop 'ERROR3 '
+                       ENDIF
+                    enddo
                  enddo
               enddo
            enddo
-        enddo
-        deallocate(toccTest)        
+           deallocate(toccTest)        
+        ENDIF
      ENDIF
      CLOSE(fileLu,STATUS='KEEP',iostat=ios)
      deallocate(toccEOS)        
      deallocate(tvirtEOS)        
      deallocate(goccEOS)        
      deallocate(gvirtEOS)        
-     deallocate(djik)   
-     deallocate(blad)
+     IF(first_order)THEN
+        deallocate(djik)   
+        deallocate(blad)
+     ENDIF
   enddo
 
 CONTAINS
