@@ -48,9 +48,6 @@ PROGRAM MAIN
 #endif
   logical :: sync
 
-  ! initialize the CUBLAS context
-  stat = cublasCreate_v2(cublas_handle)
-
   fileLu = 1345
   do ifile=1,2
      IF(ifile.EQ.1)THEN        
