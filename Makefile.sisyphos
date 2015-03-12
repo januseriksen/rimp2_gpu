@@ -1,0 +1,10 @@
+default:
+	nvcc -gencode arch=compute_35,code=sm_35 -ccbin gcc -c cuda_api.cu
+	/opt/pgi/linux86-64/14.9/bin/pgf90 cuda_api.o -c gpu_interfaces.F90 
+	/opt/pgi/linux86-64/14.9/bin/pgf90 -c -DENABLE_CUDA -DVAR_CUBLAS -DVAR_CUDA -DVAR_OMP -DVAR_OPENACC -DVAR_PGI -mp -Mconcur -acc -ta=tesla:nordc,cuda5.5 -Mcuda=5.5 -Minfo -O3 -Mipa=fast RIMP2.GPU.F90
+	/opt/pgi/linux86-64/14.9/bin/pgf90 -DENABLE_CUDA -DVAR_CUBLAS -DVAR_CUDA -DVAR_OMP -DVAR_OPENACC -DVAR_PGI -mp -Mconcur -acc -ta=tesla:nordc,cuda5.5 -Mcuda=5.5 -Minfo -O3 -Mipa=fast -o RIMP2.GPU.async.x cuda_api.o gpu_interfaces.o RIMP2.GPU.o -L/opt/pgi/linux86-64/2014/acml/5.3.0/lib -lacml
+clean:
+	rm *.o
+	rm *.mod
+	rm *.i
+	rm RIMP2.GPU.x
