@@ -1,0 +1,9 @@
+default:
+	nvcc -gencode arch=compute_35,code=sm_35 -ccbin gcc -c cuda_api.cu
+	ftn -acc -Minfo -O3 -c gpu_interfaces.F90
+	ftn -acc -Minfo -O3 -c RIMP2.GPU.F90
+	ftn -acc -Minfo -O3 -o RIMP2.GPU.pgi.x cuda_api.o gpu_interfaces.o RIMP2.GPU.o
+clean:
+	rm *.o
+	rm *.mod
+	rm *.i
