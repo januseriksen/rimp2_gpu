@@ -127,7 +127,7 @@ PROGRAM MAIN
      enddo
      write(fileLu) UvirtEOST   
 
-     first_order = .TRUE.
+     first_order = .false.
 
      !=====================================================================================
      !  Major Step 5: Generate toccEOS(nvirt,noccEOS,nvirt,noccEOS)
