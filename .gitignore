@@ -3,4 +3,6 @@
 *.mod
 *.x
 *.swp
+*.cub
+*.ptx
 Makefile
