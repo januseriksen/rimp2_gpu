@@ -334,15 +334,19 @@ PROGRAM MAIN
      write(fileLu) tvirtEOS
      write(fileLu) gvirtEOS
      write(fileLu) goccEOS
-     write(fileLu) djik
-     write(fileLu) blad
+     IF(first_order)THEN
+        write(fileLu) djik
+        write(fileLu) blad
+     ENDIF
 
      deallocate(toccEOS)        
      deallocate(tvirtEOS)        
      deallocate(goccEOS)        
      deallocate(gvirtEOS)        
-     deallocate(djik)   
-     deallocate(blad)
+     IF(first_order)THEN
+        deallocate(djik)   
+        deallocate(blad)
+     ENDIF
      CLOSE(fileLu,STATUS='KEEP',iostat=ios)
   enddo
 
